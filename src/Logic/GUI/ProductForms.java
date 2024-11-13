@@ -1,0 +1,242 @@
+package Logic.GUI;
+
+import Logic.Controller.Serialization;
+import Logic.Controller.Service;
+import Logic.Controller.Validator;
+import Logic.Model.Product;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
+
+public class ProductForms extends JPanel implements Serializable {
+    private JTextField nameField,fatsField, caloriesField, carbsField, proteinField, categoryField, quantityField;
+    private Product product;
+    private Service service = new Service();
+    private JButton saveButton;
+    private JComboBox<String> categoryCombo;
+    private JComboBox<String> productCombo;
+    private Product productToEdit;
+    private Product productToDelete;
+    private Validator validator ;
+    private Serialization serialization;
+
+    public ProductForms(String action, Service service) {
+        this.service = service;
+        this.serialization =new Serialization(service);
+        this.validator = new Validator();
+
+        serialization.deserializationOfProducts();
+
+        if("ADD".equals(action)) {
+            saveProduct();
+        }
+        else if("EDIT".equals(action)) {
+            editProduct();
+        }
+        else if("DELETE".equals(action)){
+            removeProduct();
+        }
+
+    }
+    public void saveProduct(){
+        setLayout(new GridLayout(7, 2));
+
+        String categories[] = {"Owoce", "Warzywa", "Nabiał", "Mięso", "Inne"};
+        nameField = new JTextField();
+        carbsField = new JTextField();
+        fatsField = new JTextField();
+        proteinField = new JTextField();
+        quantityField = new JTextField();
+
+        add(new JLabel("Nazwa:"));
+        add(nameField);
+
+        add(new JLabel("Węglowodany (g):"));
+        add(carbsField);
+
+        add(new JLabel("Tłuszcze (g):"));
+        add(fatsField);
+
+        add(new JLabel("Białko (g):"));
+        add(proteinField);
+
+        add(new JLabel("Kategoria:"));
+        categoryCombo = new JComboBox<>(categories);
+        categoryCombo.setSelectedIndex(0);
+        add(categoryCombo);
+
+        add(new JLabel("Ilość (g):"));
+        add(quantityField);
+
+        saveButton = new JButton("Zapisz");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String name = nameField.getText();
+                    double carbs = Double.parseDouble(carbsField.getText());
+                    double fats = Double.parseDouble(fatsField.getText());
+                    double protein = Double.parseDouble(proteinField.getText());
+                    String category = categoryCombo.getSelectedItem().toString();
+                    double quantity = Double.parseDouble(quantityField.getText());
+                    if(!validator.validateNumber(carbs) || !validator.validateNumber(fats) || !validator.validateNumber(protein) || !validator.validateNumber(quantity)){
+                        JOptionPane.showMessageDialog(null, "Niepoprawny zapis");
+                    }
+                    else if(!validator.validateName(name)){
+                        JOptionPane.showMessageDialog(null, "Taki produkt już istnieje");
+                    }
+                    else {
+                    Product newProduct = new Product(name, carbs, fats, protein, category, quantity);
+                    service.addProduct(newProduct);
+                    serialization.serializationOfProducts();
+
+                    JOptionPane.showMessageDialog(null,"Produkt został dodany!");
+                    }
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null,"Błąd. Wprowadź poprawne dane");
+                }
+            }
+        });
+        add(saveButton);
+    }
+    public void editProduct(){
+        setLayout(new GridLayout(8, 2));
+
+        String categories[] = {"Owoce", "Warzywa", "Nabiał", "Mięso", "Inne"};
+        serialization.deserializationOfProducts();
+
+        productCombo = new JComboBox<>(service.getProductsList().stream()
+                .map(Product::getProductName)
+                .toArray(String[]::new));
+
+        nameField = new JTextField();
+        carbsField = new JTextField();
+        fatsField = new JTextField();
+        proteinField = new JTextField();
+        categoryCombo = new JComboBox<>(categories);
+        quantityField = new JTextField();
+
+        productCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selectedProductName = (String) productCombo.getSelectedItem();
+
+                productToEdit = service.getProductsList().stream()
+                        .filter(p -> p.getProductName().equals(selectedProductName))
+                        .findFirst()
+                        .orElse(null);
+
+                if (productToEdit != null) {
+                    fillEditForm();
+                }
+            }
+        });
+
+        add(new JLabel("Nazwa:"));
+        add(productCombo);
+
+        add(new JLabel("Węglowodany (g):"));
+        add(carbsField);
+
+        add(new JLabel("Tłuszcze (g):"));
+        add(fatsField);
+
+        add(new JLabel("Białko (g):"));
+        add(proteinField);
+
+        add(new JLabel("Kategoria:"));
+        categoryCombo.setSelectedIndex(0);
+        add(categoryCombo);
+
+        add(new JLabel("Ilość (g):"));
+        add(quantityField);
+
+        saveButton = new JButton("Edytuj");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (productToEdit == null) {
+                        JOptionPane.showMessageDialog(null, "Proszę wybrać produkt do edytowania.");
+                        return;
+                    }
+                    String name = productCombo.getSelectedItem().toString();
+                    double carbs = Double.parseDouble(carbsField.getText());
+                    double fats = Double.parseDouble(fatsField.getText());
+                    double protein = Double.parseDouble(proteinField.getText());
+                    String category = categoryCombo.getSelectedItem().toString();
+                    double quantity = Double.parseDouble(quantityField.getText());
+                    if(!validator.validateNumber(carbs) || !validator.validateNumber(fats) || !validator.validateNumber(protein) || !validator.validateNumber(quantity)){
+                        JOptionPane.showMessageDialog(null, "Niepoprawny zapis");
+                    }
+                    else{
+
+                    productToEdit.setProductName(name);
+                    productToEdit.setCarbs(carbs);
+                    productToEdit.setFats(fats);
+                    productToEdit.setProtein(protein);
+                    productToEdit.setType(category);
+                    productToEdit.setQuantity(quantity);
+                    serialization.serializationOfProducts();
+
+                    JOptionPane.showMessageDialog(null,"Produkt został edytowany!");
+                    }
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null,"Błąd. Wprowadź poprawne dane");
+                }
+            }
+        });
+        add(saveButton);
+    }
+    private void fillEditForm() {
+        nameField.setText(productToEdit.getProductName());
+        carbsField.setText(String.valueOf(productToEdit.getCarbs()));
+        fatsField.setText(String.valueOf(productToEdit.getFats()));
+        proteinField.setText(String.valueOf(productToEdit.getProtein()));
+        categoryCombo.setSelectedItem(productToEdit.getType());
+        quantityField.setText(String.valueOf(productToEdit.getQuantity()));
+    }
+    private void removeProduct(){
+        setLayout(new GridLayout(3,1));
+        serialization.deserializationOfProducts();
+
+        productCombo = new JComboBox<>(service.getProductsList().stream()
+                .map(Product::getProductName)
+                .toArray(String[]::new));
+
+        nameField = new JTextField();
+
+        productCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selectedProductName = (String) productCombo.getSelectedItem();
+
+                productToDelete = service.getProductsList().stream()
+                        .filter(p -> p.getProductName().equals(selectedProductName))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        add(new JLabel("Nazwa:"));
+        add(productCombo);
+
+
+        saveButton = new JButton("Usuń");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    service.removeProduct(productToDelete);
+                    serialization.serializationOfProducts();
+                    JOptionPane.showMessageDialog(null,"Produkt został usunięty!");
+
+                    productCombo.removeItem(productToDelete.getProductName());
+                    productToDelete = null;
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Proszę wybrać produkt do edytowania.");
+                }
+
+            }
+        });
+        add(saveButton);
+    }
+}
