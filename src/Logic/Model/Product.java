@@ -1,6 +1,7 @@
 package Logic.Model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,17 +12,19 @@ public class Product implements Serializable {
     private double protein;;
     private String type;
     private double quantity;
+    private boolean isUsed;
 
-    public Product(String name, double carbs, double fats, double protein, String type, double quantity) {
+    public Product(String name, double carbs, double fats, double protein, String type, double quantity, boolean isUsed ) {
         this.productName = name;
         this.carbs = carbs;
         this.fats = fats;
         this.protein = protein;
         this.type = type;
         this.quantity = quantity;
+        this.isUsed = isUsed;
     }
     public double calculateCalories() {
-        return (carbs * 4) + (fats * 9) + (protein * 4);
+        return (carbs * 4.15) + (fats * 9.45) + (protein * 5.65);
     }
 
     public void editProduct(String name, double carbs, double fats, double protein, String type, double quantity) {
@@ -70,6 +73,12 @@ public class Product implements Serializable {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
+    public boolean getUsed(){
+        return isUsed;
+    }
+    public void setUsed(boolean isUsed){
+        this.isUsed = isUsed;
+    }
 
     public String toString() {
         return "Produkt: " + productName +
@@ -79,6 +88,18 @@ public class Product implements Serializable {
                 "g\nBiałko: " + protein +
                 "g\nKalorie: " + calculateCalories() + " kcal";
     }
+
+    /*public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Product)) return false;
+        Product other = (Product) obj;
+        return this.productName.equals(other.productName);
+    }*/
+
+    /*public int hashCode() {
+        return productName.hashCode();
+    }*/
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Product)) return false;
@@ -86,8 +107,9 @@ public class Product implements Serializable {
         return this.productName.equals(other.productName);
     }
 
+    @Override
     public int hashCode() {
-        return productName.hashCode();
+        return Objects.hash(productName);
     }
 
 }
