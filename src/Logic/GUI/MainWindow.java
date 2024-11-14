@@ -105,6 +105,7 @@ public class MainWindow extends JFrame {
                     System.out.println("Tłuszcze: " + product.getFats() + " g");
                     System.out.println("Białko: " + product.getProtein() + " g");
                     System.out.println("Ilość: " + product.getQuantity() + " g");
+                    System.out.println("Czy użyty: " + product.getUsed());
                     System.out.println("-------------------------");
                 }
                 System.out.println("Liczba posiłków w liście: " + service.getMealsList().size());

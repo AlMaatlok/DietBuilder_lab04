@@ -16,9 +16,6 @@ public class Service implements Serializable {
         productsList = new ArrayList<>();
         mealsList = new ArrayList<>();
     }
-    public void showDetails(Meal meal){
-
-    }
 
     public void addProduct(Product product){
         productsList.add(product);

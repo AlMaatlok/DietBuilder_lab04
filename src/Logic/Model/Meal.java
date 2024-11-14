@@ -16,6 +16,7 @@ public class Meal implements Serializable {
 
     public void addIngredient(Product product, double quantity){
         Ingredients.put(product, quantity);
+        product.setUsed(true);
     }
 
     public void editIngredient(Product product, double newQuantity) {
@@ -27,12 +28,13 @@ public class Meal implements Serializable {
     }
     public void removeIngredient(Product product){
         this.Ingredients.remove(product);
+        product.setUsed(false);
     }
 
     public int getTotalCarbs(){
         int total = 0;
         for(Product product : Ingredients.keySet()){
-            total+=product.calculateCalories();
+            total += product.calculateCalories();
         }
         return total;
     }
@@ -47,9 +49,9 @@ public class Meal implements Serializable {
             Product product = entry.getKey();
             double quantity = entry.getValue();
 
-            carbs += product.getCarbs()*quantity/product.getQuantity();
-            fats += product.getFats()*quantity/product.getQuantity();
-            proteins += product.getProtein()*quantity/product.getQuantity();
+            carbs += product.getCarbs()*quantity;
+            fats += product.getFats()*quantity;
+            proteins += product.getProtein()*quantity;
         }
         nutrition.put("Węglowodany", carbs);
         nutrition.put("Tłuszcze", fats);

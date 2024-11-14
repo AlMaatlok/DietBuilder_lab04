@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class Serialization {
     private Service service = new Service();
-    //private static long  serialVersionUID;
 
     public Serialization(Service service) {
         this.service = service;

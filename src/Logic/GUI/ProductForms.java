@@ -81,14 +81,17 @@ public class ProductForms extends JPanel implements Serializable {
                     double protein = Double.parseDouble(proteinField.getText());
                     String category = categoryCombo.getSelectedItem().toString();
                     double quantity = Double.parseDouble(quantityField.getText());
+
                     if(!validator.validateNumber(carbs) || !validator.validateNumber(fats) || !validator.validateNumber(protein) || !validator.validateNumber(quantity)){
                         JOptionPane.showMessageDialog(null, "Niepoprawny zapis");
                     }
-                    else if(!validator.validateName(name)){
+
+                    Product newProduct = new Product(name, carbs, fats, protein, category, quantity, false);
+
+                    if(!validator.validateOriginalProduct(newProduct)){
                         JOptionPane.showMessageDialog(null, "Taki produkt już istnieje");
                     }
                     else {
-                    Product newProduct = new Product(name, carbs, fats, protein, category, quantity);
                     service.addProduct(newProduct);
                     serialization.serializationOfProducts();
 
@@ -107,9 +110,7 @@ public class ProductForms extends JPanel implements Serializable {
         String categories[] = {"Owoce", "Warzywa", "Nabiał", "Mięso", "Inne"};
         serialization.deserializationOfProducts();
 
-        productCombo = new JComboBox<>(service.getProductsList().stream()
-                .map(Product::getProductName)
-                .toArray(String[]::new));
+        getProductCombo();
 
         nameField = new JTextField();
         carbsField = new JTextField();
@@ -188,21 +189,12 @@ public class ProductForms extends JPanel implements Serializable {
         });
         add(saveButton);
     }
-    private void fillEditForm() {
-        nameField.setText(productToEdit.getProductName());
-        carbsField.setText(String.valueOf(productToEdit.getCarbs()));
-        fatsField.setText(String.valueOf(productToEdit.getFats()));
-        proteinField.setText(String.valueOf(productToEdit.getProtein()));
-        categoryCombo.setSelectedItem(productToEdit.getType());
-        quantityField.setText(String.valueOf(productToEdit.getQuantity()));
-    }
+
     private void removeProduct(){
         setLayout(new GridLayout(3,1));
         serialization.deserializationOfProducts();
 
-        productCombo = new JComboBox<>(service.getProductsList().stream()
-                .map(Product::getProductName)
-                .toArray(String[]::new));
+        getProductCombo();
 
         nameField = new JTextField();
 
@@ -225,18 +217,40 @@ public class ProductForms extends JPanel implements Serializable {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try{
-                    service.removeProduct(productToDelete);
-                    serialization.serializationOfProducts();
-                    JOptionPane.showMessageDialog(null,"Produkt został usunięty!");
+                    if(productToDelete == null){
+                        JOptionPane.showMessageDialog(null, "Proszę wybrać produkt do usunięcia");
+                        return;
+                    }
+                    else if(productToDelete.getUsed()){
+                        JOptionPane.showMessageDialog(null, "Akcja niemożliwa. Produkt znajduje się w posiłku");
+                    }
+                    else {
+                        service.removeProduct(productToDelete);
+                        serialization.serializationOfProducts();
+                        JOptionPane.showMessageDialog(null, "Produkt został usunięty!");
 
-                    productCombo.removeItem(productToDelete.getProductName());
-                    productToDelete = null;
+                        productCombo.removeItem(productToDelete.getProductName());
+                        productToDelete = null;
+                    }
                 }catch(NumberFormatException ex){
                     JOptionPane.showMessageDialog(null, "Proszę wybrać produkt do edytowania.");
                 }
-
             }
         });
         add(saveButton);
+    }
+    public JComboBox<String> getProductCombo(){
+        productCombo = new JComboBox<>(service.getProductsList().stream()
+                .map(Product::getProductName)
+                .toArray(String[]::new));
+        return productCombo;
+    }
+    private void fillEditForm() {
+        nameField.setText(productToEdit.getProductName());
+        carbsField.setText(String.valueOf(productToEdit.getCarbs()));
+        fatsField.setText(String.valueOf(productToEdit.getFats()));
+        proteinField.setText(String.valueOf(productToEdit.getProtein()));
+        categoryCombo.setSelectedItem(productToEdit.getType());
+        quantityField.setText(String.valueOf(productToEdit.getQuantity()));
     }
 }

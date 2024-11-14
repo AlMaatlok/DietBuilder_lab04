@@ -7,26 +7,22 @@ import Logic.Model.Meal;
 import Logic.Model.Product;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MealForms extends JPanel implements Serializable {
     private Service service = new Service();
     private Serialization serialization;
-    private JTable mealDetailsLabel;
     private JComboBox<String> productCombo;
-    private JTextField nameField, productsField, quantityOfProductField, quantityField;
+    private JTextField nameField, quantityOfProductField, quantityField;
     private JButton saveButton;
     private Product productToAdd;
     private Validator validator;
     private JComboBox<String> mealCombo;
-    private Product productToEdit;
     private Meal mealToDelete, mealToShow;
 
     public MealForms(String action, Service service) {
@@ -52,12 +48,10 @@ public class MealForms extends JPanel implements Serializable {
     }
     public void addMeal(){
         setLayout(new GridLayout(5, 2));
-        productCombo = new JComboBox<>(service.getProductsList().stream()
-                .map(Product::getProductName)
-                .toArray(String[]::new));
+
+        getProductCombo();
 
         nameField = new JTextField();
-        productsField = new JTextField();
         quantityOfProductField = new JTextField();
         quantityField = new JTextField();
 
@@ -84,7 +78,6 @@ public class MealForms extends JPanel implements Serializable {
                         return;
                     }
                     String nameOfMeal = nameField.getText();
-                    String productName = productCombo.getSelectedItem().toString();
                     double quantity = Double.parseDouble(quantityField.getText());
 
                     if(!validator.validateNumber(quantity)){
@@ -133,9 +126,7 @@ public class MealForms extends JPanel implements Serializable {
 
         getMealCombo();
 
-        productCombo = new JComboBox<>(service.getProductsList().stream()
-                .map(Product::getProductName)
-                .toArray(String[]::new));
+        getProductCombo();
 
         JTextField quantityField = new JTextField();
 
@@ -214,6 +205,7 @@ public class MealForms extends JPanel implements Serializable {
                         selectedMeal.removeIngredient(productToDelete);
                         JOptionPane.showMessageDialog(null, "Produkt został usunięty");
                         serialization.serializationOfMeals();
+                        serialization.serializationOfProducts();
                     }
                 }
 
@@ -238,10 +230,7 @@ public class MealForms extends JPanel implements Serializable {
         setLayout(new GridLayout(3,1));
         serialization.deserializationOfMeals();
 
-        //getMealCombo();
-        mealCombo = new JComboBox<>(service.getMealsList().stream()
-                .map(Meal::getMealName)
-                .toArray(String[]::new));
+        getMealCombo();
 
         nameField = new JTextField();
 
@@ -259,17 +248,25 @@ public class MealForms extends JPanel implements Serializable {
         add(new JLabel("Nazwa:"));
         add(mealCombo);
 
-
         saveButton = new JButton("Usuń");
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try{
-                    service.removeMeal(mealToDelete);
-                    serialization.serializationOfMeals();
-                    JOptionPane.showMessageDialog(null,"Posiłek został usunięty!");
+                    if(mealToDelete == null){
+                        JOptionPane.showMessageDialog(null,"Wybierz posiłek do usunięcia");
+                    }
+                    else {
+                        service.removeMeal(mealToDelete);
+                        serialization.serializationOfMeals();
+                        JOptionPane.showMessageDialog(null, "Posiłek został usunięty!");
 
-                    mealCombo.removeItem(mealToDelete.getMealName());
-                    mealToDelete = null;
+                        mealCombo.removeItem(mealToDelete.getMealName());
+                        mealToDelete = null;
+
+                        for (Product product : service.getProductsList()) {
+                            product.setUsed(false);
+                        }
+                    }
                 }catch(NumberFormatException ex){
                     JOptionPane.showMessageDialog(null, "Proszę wybrać posiłek do edytowania.");
                 }
@@ -294,7 +291,6 @@ public class MealForms extends JPanel implements Serializable {
                         .orElse(null);
 
                 removeAll();
-
                 add(mealCombo);
 
                 if (mealToShow != null) {
@@ -308,6 +304,13 @@ public class MealForms extends JPanel implements Serializable {
                             Double quantity = entry.getValue();
                             add(new JLabel("- " + ingredient.getProductName() + ": " + ingredient.getQuantity() + "g x " + quantity + "\n "));
                         }
+                        add(new JLabel("Makroelementy:"));
+                        for (Map.Entry<String, Double> entry : mealToShow.calculateNutrition().entrySet()) {
+                            String nutrition = entry.getKey();
+                            Double quantity = entry.getValue();
+                            add(new JLabel("- " + nutrition + ": " + quantity + "g" ));
+                        }
+                        add(new JLabel("Suma kalori: " + mealToShow.getTotalCarbs() + "kcal"));
                     } else {
                         add(new JLabel("Brak składników do wyświetlenia."));
                     }
@@ -320,11 +323,16 @@ public class MealForms extends JPanel implements Serializable {
             }
         });
     }
-
     public JComboBox<String> getMealCombo() {
         mealCombo = new JComboBox<>(service.getMealsList().stream()
                 .map(Meal::getMealName)
                 .toArray(String[]::new));
         return mealCombo;
+    }
+    public JComboBox<String> getProductCombo(){
+        productCombo = new JComboBox<>(service.getProductsList().stream()
+                .map(Product::getProductName)
+                .toArray(String[]::new));
+        return productCombo;
     }
 }
