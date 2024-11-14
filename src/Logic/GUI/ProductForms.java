@@ -12,8 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 
 public class ProductForms extends JPanel implements Serializable {
-    private JTextField nameField,fatsField, caloriesField, carbsField, proteinField, categoryField, quantityField;
-    private Product product;
+    private JTextField nameField,fatsField, carbsField, proteinField, quantityField;
     private Service service = new Service();
     private JButton saveButton;
     private JComboBox<String> categoryCombo;

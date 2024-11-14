@@ -4,10 +4,8 @@ import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
 
-import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Service implements Serializable {
     private ArrayList<Product> productsList;

@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class MainWindow extends JFrame {
@@ -24,13 +23,11 @@ public class MainWindow extends JFrame {
     private JMenuItem menuAddDiet, menuRemoveDiet, menuShowDiet, menuGenerate;
     private JPanel mainPanel;
     private Service service;
-    private Validator validator ;
     private Serialization serialization;
 
     public MainWindow() {
         setTitle("Diet Builder");
         this.service = new Service();
-        this.validator = new Validator();
         this.serialization = new Serialization(service);
         serialization.deserializationOfProducts();
         serialization.deserializationOfMeals();

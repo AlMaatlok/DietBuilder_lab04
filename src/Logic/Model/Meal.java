@@ -63,13 +63,8 @@ public class Meal implements Serializable {
     public String getMealName() {
         return mealName;
     }
-    public void setMealName(String mealName) {
-        this.mealName = mealName;
-    }
+
     public Map<Product, Double> getIngredients() {
         return Ingredients;
-    }
-    public void setIngredients(Map<Product, Double> ingredients) {
-        this.Ingredients = ingredients;
     }
 }

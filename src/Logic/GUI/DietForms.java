@@ -4,16 +4,12 @@ import Logic.Controller.Serialization;
 import Logic.Controller.Service;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
-import Logic.Model.Product;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DietForms extends JPanel {
     private JComboBox mealCombo, dietCombo;
