@@ -1,5 +1,6 @@
 package Logic.Controller;
 
+import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
 
@@ -69,5 +70,31 @@ public class Serialization {
             e.printStackTrace();
         }
     }
-}
+    public void serializationOfDiets() {
+        try (FileOutputStream fos = new FileOutputStream("dietsData");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
+            oos.writeObject(service.getDietsList());
+
+        } catch (IOException ioe) {
+            System.out.println("Error while writing data: " + ioe);
+            ioe.printStackTrace();
+        }
+    }
+
+    public void deserializationOfDiets() {
+
+        try (FileInputStream fis = new FileInputStream("dietsData");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+
+            ArrayList<Diet> dietsList = (ArrayList<Diet>) ois.readObject();
+            service.getDietsList().clear();
+            service.getDietsList().addAll(dietsList);
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error while reading data: " + e);
+            e.printStackTrace();
+        }
+    }
+}

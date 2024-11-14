@@ -88,26 +88,12 @@ public class Product implements Serializable {
                 "g\nBiałko: " + protein +
                 "g\nKalorie: " + calculateCalories() + " kcal";
     }
-
-    /*public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Product)) return false;
-        Product other = (Product) obj;
-        return this.productName.equals(other.productName);
-    }*/
-
-    /*public int hashCode() {
-        return productName.hashCode();
-    }*/
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Product)) return false;
         Product other = (Product) obj;
         return this.productName.equals(other.productName);
     }
-
-    @Override
     public int hashCode() {
         return Objects.hash(productName);
     }

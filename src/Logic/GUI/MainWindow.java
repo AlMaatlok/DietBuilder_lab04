@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MainWindow extends JFrame {
@@ -18,11 +19,9 @@ public class MainWindow extends JFrame {
     private JMenu menuProducts;
     private JMenu menuMeals;
     private JMenu menuDiet;
-    private JMenu menuShoppingList;
     private JMenuItem menuAddProduct, menuRemoveProduct, menuEditProduct;
     private JMenuItem menuAddMeal, menuRemoveMeal, menuEditMeal, menuShowMeals;
-    private JMenuItem menuAddDiet, menuRemoveDiet, menuEditDiet;
-    private JMenuItem menuGenerate;
+    private JMenuItem menuAddDiet, menuRemoveDiet, menuShowDiet, menuGenerate;
     private JPanel mainPanel;
     private Service service;
     private Validator validator ;
@@ -35,6 +34,7 @@ public class MainWindow extends JFrame {
         this.serialization = new Serialization(service);
         serialization.deserializationOfProducts();
         serialization.deserializationOfMeals();
+        serialization.deserializationOfDiets();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -60,23 +60,20 @@ public class MainWindow extends JFrame {
         menuShowMeals = new JMenuItem("Lista posiłków");
         menuMeals.add(menuShowMeals);
 
-        menuDiet = new JMenu("Diety");
+        menuDiet = new JMenu("Plany posiłkowe");
         menuAddDiet = new JMenuItem("Stwórz");
         menuDiet.add(menuAddDiet);
-        menuEditDiet = new JMenuItem("Edytuj");
-        menuDiet.add(menuEditDiet);
         menuRemoveDiet = new JMenuItem("Usuń");
         menuDiet.add(menuRemoveDiet);
-
-        menuShoppingList = new JMenu("Lista zakupów");
-        menuGenerate = new JMenuItem("Wygeneruj");
-        menuShoppingList.add(menuGenerate);
+        menuShowDiet = new JMenuItem("Lista planów");
+        menuDiet.add(menuShowDiet);
+        menuGenerate = new JMenuItem("Wygeneruj listę zakupów");
+        menuDiet.add(menuGenerate);
 
 
         menuBar.add(menuProducts);
         menuBar.add(menuMeals);
         menuBar.add(menuDiet);
-        menuBar.add(menuShoppingList);
 
         setJMenuBar(menuBar);
 
@@ -88,10 +85,15 @@ public class MainWindow extends JFrame {
         menuAddProduct.addActionListener(e -> openAddProduct());
         menuEditProduct.addActionListener(e -> openEditProduct());
         menuRemoveProduct.addActionListener(e -> openRemoveProduct());
+
         menuAddMeal.addActionListener(e -> openAddMeal());
         menuEditMeal.addActionListener(e -> openEditMeal());
         menuRemoveMeal.addActionListener(e -> openRemoveMeal());
         menuShowMeals.addActionListener(e -> openShowMeals());
+
+        menuAddDiet.addActionListener(e -> openAddDiet());
+        menuRemoveDiet.addActionListener(e -> openRemoveDiet());
+        menuShowDiet.addActionListener(e -> openShowDiet());
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -120,6 +122,15 @@ public class MainWindow extends JFrame {
                     }
                     System.out.println("-------------------------");
                 }
+                System.out.println("Liczba planów w liście: " + service.getDietsList().size());
+                for (Diet diet : service.getDietsList()) {
+                    System.out.println("Nazwa planu: " + diet.getName());
+                    System.out.println("Posiłki:");
+                    for (Meal meal : diet.getMeals()) {
+                        System.out.println("- " + meal.getMealName());
+                    }
+                    System.out.println("-------------------------");
+                }
                 serialization.serializationOfProducts();
             }
         });
@@ -128,72 +139,72 @@ public class MainWindow extends JFrame {
     private void openAddProduct() {
         ProductForms addProductPanel = new ProductForms("ADD", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addProductPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        productPanel(addProductPanel);
     }
     private void openEditProduct() {
         ProductForms addProductPanel = new ProductForms("EDIT", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addProductPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        productPanel(addProductPanel);
     }
     private void openRemoveProduct() {
         ProductForms addProductPanel = new ProductForms("DELETE", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addProductPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        productPanel(addProductPanel);
     }
     private void openAddMeal() {
         MealForms addMealPanel = new MealForms("ADD", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addMealPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        mealPanel(addMealPanel);
     }
     private void openEditMeal() {
         MealForms addMealPanel = new MealForms("EDIT", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addMealPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        mealPanel(addMealPanel);
     }
     private void openRemoveMeal() {
         MealForms addMealPanel = new MealForms("DELETE", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addMealPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        mealPanel(addMealPanel);
     }
     private void openShowMeals(){
         MealForms addMealPanel = new MealForms("SHOW", service);
 
-        mainPanel.removeAll();
-        mainPanel.add(addMealPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-    private void openEditDiet() {
-
+        mealPanel(addMealPanel);
     }
     private void openAddDiet() {
+        DietForms addDietPanel = new DietForms("ADD", service);
 
+        dietPanel(addDietPanel);
     }
     private void openRemoveDiet() {
+        DietForms addDietPanel = new DietForms("REMOVE", service);
 
+        dietPanel(addDietPanel);
     }
-    private void openEditDiet(Diet diet) {
+    private void openShowDiet() {
+        DietForms addDietPanel = new DietForms("SHOW", service);
 
+        dietPanel(addDietPanel);
     }
     private void openGenerateShoppingList(){
 
+    }
+    public void productPanel(ProductForms panel){
+        mainPanel.removeAll();
+        mainPanel.add(panel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+    public void mealPanel(MealForms panel){
+        mainPanel.removeAll();
+        mainPanel.add(panel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+    public void dietPanel(DietForms panel){
+        mainPanel.removeAll();
+        mainPanel.add(panel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 }

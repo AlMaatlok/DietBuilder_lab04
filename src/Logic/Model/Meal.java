@@ -31,7 +31,7 @@ public class Meal implements Serializable {
         product.setUsed(false);
     }
 
-    public int getTotalCarbs(){
+    public int getTotalCalories(){
         int total = 0;
         for(Product product : Ingredients.keySet()){
             total += product.calculateCalories();

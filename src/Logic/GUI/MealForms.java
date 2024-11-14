@@ -310,7 +310,7 @@ public class MealForms extends JPanel implements Serializable {
                             Double quantity = entry.getValue();
                             add(new JLabel("- " + nutrition + ": " + quantity + "g" ));
                         }
-                        add(new JLabel("Suma kalori: " + mealToShow.getTotalCarbs() + "kcal"));
+                        add(new JLabel("Suma kalori: " + mealToShow.getTotalCalories() + "kcal"));
                     } else {
                         add(new JLabel("Brak składników do wyświetlenia."));
                     }
