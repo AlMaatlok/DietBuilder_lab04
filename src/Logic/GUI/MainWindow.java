@@ -2,7 +2,6 @@ package Logic.GUI;
 
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
-import Logic.Controller.Validator;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
@@ -131,7 +130,6 @@ public class MainWindow extends JFrame {
                 serialization.serializationOfProducts();
             }
         });
-
     }
     private void openAddProduct() {
         ProductForms addProductPanel = new ProductForms("ADD", service);
@@ -184,7 +182,6 @@ public class MainWindow extends JFrame {
         dietPanel(addDietPanel);
     }
     private void openGenerateShoppingList(){
-
     }
     public void productPanel(ProductForms panel){
         mainPanel.removeAll();
