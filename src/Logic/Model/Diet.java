@@ -15,6 +15,7 @@ public class Diet implements Serializable {
     }
     public void addMeal(Meal meal) {
         meals.add(meal);
+        meal.setUsed(true);
     }
 
     public ArrayList<Meal> getMeals() {

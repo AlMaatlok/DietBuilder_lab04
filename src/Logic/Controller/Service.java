@@ -15,7 +15,7 @@ public class Service implements Serializable {
     public Service(){
         productsList = new ArrayList<>();
         mealsList = new ArrayList<>();
-        dietsList = new ArrayList<>();
+        dietsList = new ArrayList<>();;
     }
 
     public void addProduct(Product product){
@@ -42,6 +42,11 @@ public class Service implements Serializable {
     }
     public void removeMeal(Meal meal){
         mealsList.remove(meal);
+        for (Product product : meal.getIngredients().keySet()) {
+            if(meal.validateIsInMeal(product)) {
+                product.setUsed(false);
+            }
+        }
     }
 
     public void removeDiet(Diet diet){
@@ -49,5 +54,23 @@ public class Service implements Serializable {
     }
     public void setProductsList(java.util.ArrayList<Product> productsList) {
         this.productsList = productsList;
+    }
+    /*public void deleteProductFromMeal(Product product){
+        for(Meal meal : getMealsList()){
+            if(meal.getIngredients().keySet().contains(product)){
+                meal.removeIngredient(product);
+            }
+        }
+    }*/
+
+    public boolean validateInInDiet(Meal meal){
+        boolean value = false;
+        ArrayList<Diet> dietList = getDietsList();
+        for(Diet diet : dietList){
+            if(diet.getMeals().contains(meal)){
+                value = true;
+            }
+        }
+        return value;
     }
 }

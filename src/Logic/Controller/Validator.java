@@ -1,5 +1,6 @@
 package Logic.Controller;
 
+import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
 
@@ -25,14 +26,4 @@ public class Validator {
         }
         return value;
     }
-    public boolean validateIsInMeal(Product product){
-            boolean value = false;
-            ArrayList<Meal> mealsList = service.getMealsList();
-            for(Meal meal: mealsList) {
-                if(meal.getIngredients().keySet().contains(product)){
-                    value = true;
-                }
-            }
-            return value;
-        }
 }

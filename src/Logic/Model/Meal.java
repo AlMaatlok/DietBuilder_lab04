@@ -1,6 +1,9 @@
 package Logic.Model;
 
+import Logic.Controller.Service;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,10 +11,14 @@ public class Meal implements Serializable {
     private static final long serialVersionUID = 9084374006778229070L;
     private String mealName;
     private Map<Product, Double> Ingredients;
+    private boolean isUsed;
+    private Service service;
 
-    public Meal(String name, Map<Product, Double> ingredients){
+    public Meal(String name, Map<Product, Double> ingredients, boolean isUsed){
         this.mealName = name;
         this.Ingredients = ingredients;
+        this.isUsed = isUsed;
+        this.service = new Service();
     }
 
     public void addIngredient(Product product, double quantity){
@@ -28,7 +35,9 @@ public class Meal implements Serializable {
     }
     public void removeIngredient(Product product){
         this.Ingredients.remove(product);
-        product.setUsed(false);
+        if(!validateIsInMeal(product)){
+            product.setUsed(false);
+        }
     }
 
     public int getTotalCalories(){
@@ -66,5 +75,21 @@ public class Meal implements Serializable {
 
     public Map<Product, Double> getIngredients() {
         return Ingredients;
+    }
+    public boolean getUsed(){
+        return isUsed;
+    }
+    public void setUsed(boolean isUsed){
+        this.isUsed = isUsed;
+    }
+    public boolean validateIsInMeal(Product product){
+        boolean value = false;
+        ArrayList<Meal> mealsList = service.getMealsList();
+        for(Meal meal : mealsList) {
+            if(meal.getIngredients().keySet().contains(product)){
+                value = true;
+            }
+        }
+        return value;
     }
 }

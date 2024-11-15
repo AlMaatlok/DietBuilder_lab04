@@ -94,7 +94,8 @@ public class MealForms extends JPanel implements Serializable {
                     } else {
                         Map<Product, Double> ingredients = new HashMap<>();
                         ingredients.put(productToAdd, quantity);
-                        Meal newMeal = new Meal(nameOfMeal, ingredients);
+                        productToAdd.setUsed(true);
+                        Meal newMeal = new Meal(nameOfMeal, ingredients, false);
                         service.addMeal(newMeal);
                         JOptionPane.showMessageDialog(null, "Dodano nowy posiłek: " + nameOfMeal);
                     }
@@ -257,15 +258,14 @@ public class MealForms extends JPanel implements Serializable {
                     }
                     else {
                         service.removeMeal(mealToDelete);
+
                         serialization.serializationOfMeals();
                         JOptionPane.showMessageDialog(null, "Posiłek został usunięty!");
 
                         mealCombo.removeItem(mealToDelete.getMealName());
                         mealToDelete = null;
 
-                        for (Product product : service.getProductsList()) {
-                            product.setUsed(false);
-                        }
+
                     }
                 }catch(NumberFormatException ex){
                     JOptionPane.showMessageDialog(null, "Proszę wybrać posiłek do edytowania.");
