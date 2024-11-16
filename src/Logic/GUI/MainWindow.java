@@ -32,6 +32,7 @@ public class MainWindow extends JFrame {
         serialization.deserializationOfProducts();
         serialization.deserializationOfMeals();
         serialization.deserializationOfDiets();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -88,6 +89,7 @@ public class MainWindow extends JFrame {
 
         menuAddDiet.addActionListener(e -> openAddDiet());
         menuShowDiet.addActionListener(e -> openShowDiet());
+        menuGenerate.addActionListener(e -> openGenerateShoppingList());
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -178,6 +180,9 @@ public class MainWindow extends JFrame {
         dietPanel(addDietPanel);
     }
     private void openGenerateShoppingList(){
+        DietForms addDietPanel = new DietForms("SHOPPING LIST", service);
+
+        dietPanel(addDietPanel);
     }
     public void productPanel(ProductForms panel){
         mainPanel.removeAll();

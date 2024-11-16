@@ -16,9 +16,9 @@ public class DietForms extends JPanel {
     private JTextField dietNameField;
     private Service service = new Service();
     private Meal mealToAdd;
-    private JButton saveButton;
+    private JButton saveButton, generateButton;
     private Serialization serialization;
-    private Diet dietToDelete, dietToShow;
+    private Diet dietToShow, selectedDiet;
 
     public DietForms(String action, Service service){
         this.service = service;
@@ -31,6 +31,9 @@ public class DietForms extends JPanel {
         }
         else if(action.equals("SHOW")){
             showDiet();
+        }
+        else if(action.equals("SHOPPING LIST")){
+            generateShoppingList();
         }
     }
 
@@ -133,6 +136,42 @@ public class DietForms extends JPanel {
                 repaint();
             }
         });
+    }
+    public void generateShoppingList(){
+        setLayout(new GridLayout());
+        serialization.deserializationOfDiets();
+
+        getDietCombo();
+        add(dietCombo);
+
+        dietCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selectedDietName = (String) dietCombo.getSelectedItem();
+
+                selectedDiet = service.getDietsList().stream()
+                        .filter(diet -> diet.getName().equals(selectedDietName))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+
+        generateButton = new JButton("Wygeneruj listę zakupów");
+        generateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    if(selectedDiet == null){
+                        JOptionPane.showMessageDialog(null, "Nie wybrano diety.");
+                    }
+                    else{
+                        service.saveShoppingListToFile(selectedDiet);
+                        JOptionPane.showMessageDialog(null, "Lista została wygenerowana");
+                    }
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Błąd. Wprowadź poprawne dane");
+                }
+            }
+        });
+        add(generateButton);
     }
     public JComboBox<String> getMealCombo() {
         mealCombo = new JComboBox<>(service.getMealsList().stream()

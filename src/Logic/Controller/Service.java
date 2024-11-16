@@ -73,4 +73,11 @@ public class Service implements Serializable {
         }
         return value;
     }
+    public void saveShoppingListToFile(Diet diet) {
+        ShoppingList shoppingList = new ShoppingList(diet);
+        shoppingList.generatePDF(diet.getName() + "_shopping_list.pdf");
+    }
+    public void removeDiet(String name){
+        dietsList.removeIf(diet -> diet.getName().equals(name));
+    }
 }
