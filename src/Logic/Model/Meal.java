@@ -3,9 +3,7 @@ package Logic.Model;
 import Logic.Controller.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Meal implements Serializable {

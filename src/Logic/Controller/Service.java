@@ -59,20 +59,6 @@ public class Service implements Serializable {
         }
     }
 
-    public void setProductsList(java.util.ArrayList<Product> productsList) {
-        this.productsList = productsList;
-    }
-
-    public boolean validateInInDiet(Meal meal){
-        boolean value = false;
-        ArrayList<Diet> dietList = getDietsList();
-        for(Diet diet : dietList){
-            if(diet.getMeals().contains(meal)){
-                value = true;
-            }
-        }
-        return value;
-    }
     public void saveShoppingListToFile(Diet diet) {
         ShoppingList shoppingList = new ShoppingList(diet);
         shoppingList.generatePDF(diet.getName() + "_shopping_list.pdf");

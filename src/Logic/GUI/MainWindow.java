@@ -2,7 +2,6 @@ package Logic.GUI;
 
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
-import Logic.Controller.ShoppingList;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;

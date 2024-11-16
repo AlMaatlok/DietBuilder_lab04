@@ -1,10 +1,7 @@
 package Logic.Controller;
 
-import Logic.Model.Diet;
-import Logic.Model.Meal;
 import Logic.Model.Product;
 
-import java.util.ArrayList;
 
 public class Validator {
     private Service service;
