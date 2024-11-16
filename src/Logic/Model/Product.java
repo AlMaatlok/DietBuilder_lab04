@@ -23,9 +23,7 @@ public class Product implements Serializable {
         this.quantity = quantity;
         this.isUsed = isUsed;
     }
-    public double calculateCalories() {
-        return (carbs * 4.15) + (fats * 9.45) + (protein * 5.65);
-    }
+
 
     public void editProduct(String name, double carbs, double fats, double protein, String type, double quantity, boolean isUsed) {
         this.productName = name;
@@ -35,6 +33,9 @@ public class Product implements Serializable {
         this.type = type;
         this.quantity = quantity;
         this.isUsed = isUsed;
+    }
+    public double calculateCalories() {
+        return (carbs * 4.15) + (fats * 9.45) + (protein * 5.65);
     }
 
     public String getProductName() {
