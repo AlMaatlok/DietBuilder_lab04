@@ -224,7 +224,6 @@ public class ProductForms extends JPanel implements Serializable {
                     }
                     else {
                         service.removeProduct(productToDelete);
-                        //service.deleteProductFromMeal(productToDelete);
                         serialization.serializationOfProducts();
                         JOptionPane.showMessageDialog(null, "Produkt został usunięty!");
 

@@ -34,7 +34,6 @@ public class ShoppingList {
         }
         return shoppingList;
     }
-    // Metoda pomocnicza do wyświetlania listy zakupów
     public void print() {
         Map<String, Map<String, Double>> shoppingList = generateShoppingList();
         for (String category : shoppingList.keySet()) {

@@ -5,6 +5,7 @@ import Logic.Controller.Service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Meal implements Serializable {
@@ -14,16 +15,22 @@ public class Meal implements Serializable {
     private boolean isUsed;
     private Service service;
 
-    public Meal(String name, Map<Product, Double> ingredients, boolean isUsed){
+    public Meal(String name, Map<Product, Double> ingredients, boolean isUsed, Service service){
         this.mealName = name;
         this.Ingredients = ingredients;
         this.isUsed = isUsed;
-        this.service = new Service();
+        this.service = service;
     }
 
     public void addIngredient(Product product, double quantity){
-        Ingredients.put(product, quantity);
-        product.setUsed(true);
+        if (Ingredients.containsKey(product)) {
+            double existingQuantity = Ingredients.get(product);
+            Ingredients.put(product, existingQuantity + quantity);
+
+        } else {
+            Ingredients.put(product, quantity);
+            product.setUsed(true);
+        }
     }
 
     public void editIngredient(Product product, double newQuantity) {
@@ -82,14 +89,12 @@ public class Meal implements Serializable {
     public void setUsed(boolean isUsed){
         this.isUsed = isUsed;
     }
-    public boolean validateIsInMeal(Product product){
-        boolean value = false;
-        ArrayList<Meal> mealsList = service.getMealsList();
-        for(Meal meal : mealsList) {
-            if(meal.getIngredients().keySet().contains(product)){
-                value = true;
+    public boolean validateIsInMeal(Product product) {
+        for (Meal meal : service.getMealsList()) {
+            if (meal.getIngredients().containsKey(product)) {
+                return true;
             }
         }
-        return value;
+        return false;
     }
 }

@@ -93,9 +93,18 @@ public class MealForms extends JPanel implements Serializable {
                         JOptionPane.showMessageDialog(null, "Dodano produkt do istniejącego posiłku: " + nameOfMeal);
                     } else {
                         Map<Product, Double> ingredients = new HashMap<>();
-                        ingredients.put(productToAdd, quantity);
-                        productToAdd.setUsed(true);
-                        Meal newMeal = new Meal(nameOfMeal, ingredients, false);
+
+                        Product productFromList = service.getProductsList().stream()
+                                .filter(p -> p.equals(productToAdd))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (productFromList != null) {
+                            ingredients.put(productFromList, quantity);
+                            productToAdd.setUsed(true);
+                        }
+
+                        Meal newMeal = new Meal(nameOfMeal, ingredients, false, service);
                         service.addMeal(newMeal);
                         JOptionPane.showMessageDialog(null, "Dodano nowy posiłek: " + nameOfMeal);
                     }
@@ -230,6 +239,7 @@ public class MealForms extends JPanel implements Serializable {
     public void removeMeal(){
         setLayout(new GridLayout(3,1));
         serialization.deserializationOfMeals();
+        serialization.deserializationOfProducts();
 
         getMealCombo();
 
@@ -257,15 +267,20 @@ public class MealForms extends JPanel implements Serializable {
                         JOptionPane.showMessageDialog(null,"Wybierz posiłek do usunięcia");
                     }
                     else {
-                        service.removeMeal(mealToDelete);
+                        if(mealToDelete.getUsed()){
+                            JOptionPane.showMessageDialog(null,"Akcja niemożliwa! Posiłek znajduje się w planie posiłkowym.");
+                        }
+                        else {
+                            service.removeMeal(mealToDelete);
 
-                        serialization.serializationOfMeals();
-                        JOptionPane.showMessageDialog(null, "Posiłek został usunięty!");
+                            serialization.serializationOfMeals();
+                            serialization.serializationOfProducts();
 
-                        mealCombo.removeItem(mealToDelete.getMealName());
-                        mealToDelete = null;
+                            JOptionPane.showMessageDialog(null, "Posiłek został usunięty!");
 
-
+                            mealCombo.removeItem(mealToDelete.getMealName());
+                            mealToDelete = null;
+                        }
                     }
                 }catch(NumberFormatException ex){
                     JOptionPane.showMessageDialog(null, "Proszę wybrać posiłek do edytowania.");

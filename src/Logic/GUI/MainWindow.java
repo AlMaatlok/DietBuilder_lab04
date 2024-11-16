@@ -2,6 +2,7 @@ package Logic.GUI;
 
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
+import Logic.Controller.ShoppingList;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
@@ -19,7 +20,7 @@ public class MainWindow extends JFrame {
     private JMenu menuDiet;
     private JMenuItem menuAddProduct, menuRemoveProduct, menuEditProduct;
     private JMenuItem menuAddMeal, menuRemoveMeal, menuEditMeal, menuShowMeals;
-    private JMenuItem menuAddDiet, menuRemoveDiet, menuShowDiet, menuGenerate;
+    private JMenuItem menuAddDiet, menuShowDiet, menuGenerate;
     private JPanel mainPanel;
     private Service service;
     private Serialization serialization;
@@ -59,8 +60,6 @@ public class MainWindow extends JFrame {
         menuDiet = new JMenu("Plany posiłkowe");
         menuAddDiet = new JMenuItem("Stwórz");
         menuDiet.add(menuAddDiet);
-        menuRemoveDiet = new JMenuItem("Usuń");
-        menuDiet.add(menuRemoveDiet);
         menuShowDiet = new JMenuItem("Lista planów");
         menuDiet.add(menuShowDiet);
         menuGenerate = new JMenuItem("Wygeneruj listę zakupów");
@@ -88,7 +87,6 @@ public class MainWindow extends JFrame {
         menuShowMeals.addActionListener(e -> openShowMeals());
 
         menuAddDiet.addActionListener(e -> openAddDiet());
-        menuRemoveDiet.addActionListener(e -> openRemoveDiet());
         menuShowDiet.addActionListener(e -> openShowDiet());
 
         this.addWindowListener(new WindowAdapter() {
@@ -116,6 +114,7 @@ public class MainWindow extends JFrame {
                         Double quantity = entry.getValue();
                         System.out.println("- " + ingredient.getProductName() + ": " + ingredient.getQuantity() + "g x "+ quantity);
                     }
+                    System.out.println("Czy użyty: " + meal.getUsed());
                     System.out.println("-------------------------");
                 }
                 System.out.println("Liczba planów w liście: " + service.getDietsList().size());
@@ -127,7 +126,9 @@ public class MainWindow extends JFrame {
                     }
                     System.out.println("-------------------------");
                 }
+
                 serialization.serializationOfProducts();
+                serialization.serializationOfMeals();
             }
         });
     }
@@ -168,11 +169,6 @@ public class MainWindow extends JFrame {
     }
     private void openAddDiet() {
         DietForms addDietPanel = new DietForms("ADD", service);
-
-        dietPanel(addDietPanel);
-    }
-    private void openRemoveDiet() {
-        DietForms addDietPanel = new DietForms("REMOVE", service);
 
         dietPanel(addDietPanel);
     }

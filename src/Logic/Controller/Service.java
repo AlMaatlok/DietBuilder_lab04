@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Service implements Serializable {
+    private static final long serialVersionUID = -4983938866711596697L;
+
     private ArrayList<Product> productsList;
     private ArrayList<Meal> mealsList;
     private ArrayList<Diet> dietsList;
@@ -43,25 +45,23 @@ public class Service implements Serializable {
     public void removeMeal(Meal meal){
         mealsList.remove(meal);
         for (Product product : meal.getIngredients().keySet()) {
-            if(meal.validateIsInMeal(product)) {
+            boolean isProductUsedElsewhere = false;
+
+            for (Meal otherMeal : mealsList) {
+                if (otherMeal.getIngredients().keySet().equals(product.getProductName())) {
+                    isProductUsedElsewhere = true;
+                    break;
+                }
+            }
+            if (!isProductUsedElsewhere) {
                 product.setUsed(false);
             }
         }
     }
 
-    public void removeDiet(Diet diet){
-        dietsList.remove(diet);
-    }
     public void setProductsList(java.util.ArrayList<Product> productsList) {
         this.productsList = productsList;
     }
-    /*public void deleteProductFromMeal(Product product){
-        for(Meal meal : getMealsList()){
-            if(meal.getIngredients().keySet().contains(product)){
-                meal.removeIngredient(product);
-            }
-        }
-    }*/
 
     public boolean validateInInDiet(Meal meal){
         boolean value = false;

@@ -27,13 +27,14 @@ public class Product implements Serializable {
         return (carbs * 4.15) + (fats * 9.45) + (protein * 5.65);
     }
 
-    public void editProduct(String name, double carbs, double fats, double protein, String type, double quantity) {
+    public void editProduct(String name, double carbs, double fats, double protein, String type, double quantity, boolean isUsed) {
         this.productName = name;
         this.carbs = carbs;
         this.fats = fats;
         this.protein = protein;
         this.type = type;
         this.quantity = quantity;
+        this.isUsed = isUsed;
     }
 
     public String getProductName() {
@@ -79,7 +80,7 @@ public class Product implements Serializable {
     public void setUsed(boolean isUsed){
         this.isUsed = isUsed;
     }
-
+    @Override
     public String toString() {
         return "Produkt: " + productName +
                 "\nKategoria: " + type +
@@ -88,12 +89,17 @@ public class Product implements Serializable {
                 "g\nBiałko: " + protein +
                 "g\nKalorie: " + calculateCalories() + " kcal";
     }
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Product)) return false;
-        Product other = (Product) obj;
-        return this.productName.equals(other.productName);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.carbs, carbs) == 0 &&
+                Double.compare(product.fats, fats) == 0 &&
+                Double.compare(product.protein, protein) == 0 &&
+                Objects.equals(productName, product.productName);
     }
+    @Override
     public int hashCode() {
         return Objects.hash(productName);
     }

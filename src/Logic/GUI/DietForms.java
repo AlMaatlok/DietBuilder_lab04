@@ -29,9 +29,6 @@ public class DietForms extends JPanel {
         if (action.equals("ADD")) {
             addDiet();
         }
-        else if(action.equals("REMOVE")){
-            removeDiet();
-        }
         else if(action.equals("SHOW")){
             showDiet();
         }
@@ -76,6 +73,7 @@ public class DietForms extends JPanel {
                     } else {
                         ArrayList<Meal> mealInDiet = new ArrayList<>();
                         mealInDiet.add(mealToAdd);
+                        mealToAdd.setUsed(true);
                         Diet newDiet = new Diet(nameOfDiet, mealInDiet);
                         service.addDiet(newDiet);
                         JOptionPane.showMessageDialog(null, "Dodano nowy plan posiłków: " + nameOfDiet);
@@ -93,50 +91,6 @@ public class DietForms extends JPanel {
         add(new JLabel("Posiłki"));
         add(mealCombo);
 
-        add(saveButton);
-    }
-    public void removeDiet(){
-        setLayout(new GridLayout(3,1));
-        serialization.deserializationOfMeals();
-
-        getDietCombo();
-
-        dietNameField = new JTextField();
-
-        dietCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String selectedDietName = (String) dietCombo.getSelectedItem();
-
-                dietToDelete = service.getDietsList().stream()
-                        .filter(diet -> diet.getName().equals(selectedDietName))
-                        .findFirst()
-                        .orElse(null);
-            }
-        });
-
-        add(new JLabel("Nazwa:"));
-        add(dietCombo);
-
-        saveButton = new JButton("Usuń");
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    if(dietToDelete == null){
-                        JOptionPane.showMessageDialog(null,"Wybierz plan do usunięcia");
-                    }
-                    else {
-                        service.removeDiet(dietToDelete);
-                        serialization.serializationOfDiets();
-                        JOptionPane.showMessageDialog(null, "Plan został usunięty!");
-
-                        dietCombo.removeItem(dietToDelete.getName());
-                        dietToDelete = null;
-                    }
-                }catch(NumberFormatException ex){
-                    JOptionPane.showMessageDialog(null, "Proszę wybrać plan do edytowania.");
-                }
-            }
-        });
         add(saveButton);
     }
     public void showDiet(){
