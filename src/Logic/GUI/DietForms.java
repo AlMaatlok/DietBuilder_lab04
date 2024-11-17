@@ -14,15 +14,15 @@ import java.util.ArrayList;
 public class DietForms extends JPanel {
     private JComboBox mealCombo, dietCombo;
     private JTextField dietNameField;
-    private Service service = new Service();
+    private Service service;
     private Meal mealToAdd;
     private JButton saveButton, generateButton;
     private Serialization serialization;
     private Diet dietToShow, selectedDiet;
 
-    public DietForms(String action, Service service){
+    public DietForms(String action, Service service, Serialization serialization) {
         this.service = service;
-        this.serialization = new Serialization(service);
+        this.serialization = serialization;
         serialization.deserializationOfDiets();
         serialization.deserializationOfMeals();
 

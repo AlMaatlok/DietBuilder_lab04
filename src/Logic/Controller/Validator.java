@@ -4,22 +4,19 @@ import Logic.Model.Product;
 
 
 public class Validator {
-    private Service service;
 
-    public Validator() {
-        this.service = new Service();
-    }
+    public Validator() {}
 
     public boolean validateNumber(Double number) {
         if (number < 0)
             return false;
         else return true;
     }
-    public boolean validateOriginalProduct(Product product) {
-        boolean value = true;
+    public boolean validateOriginalProduct(Product product, Service service) {
+        boolean value = false;
         for(Product product1 : service.getProductsList()) {
             if (product.getProductName().equalsIgnoreCase(product1.getProductName()))
-                value = false;
+                value = true;
         }
         return value;
     }

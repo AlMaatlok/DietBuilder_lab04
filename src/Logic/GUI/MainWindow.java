@@ -2,6 +2,7 @@ package Logic.GUI;
 
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
+import Logic.Controller.Validator;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
@@ -23,11 +24,13 @@ public class MainWindow extends JFrame {
     private JPanel mainPanel;
     private Service service;
     private Serialization serialization;
+    private Validator validator;
 
-    public MainWindow() {
+    public MainWindow(Service service, Serialization serialization, Validator validator) {
         setTitle("Diet Builder");
-        this.service = new Service();
-        this.serialization = new Serialization(service);
+        this.service = service;
+        this.serialization = serialization;
+        this.validator = validator;
         serialization.deserializationOfProducts();
         serialization.deserializationOfMeals();
         serialization.deserializationOfDiets();
@@ -134,52 +137,52 @@ public class MainWindow extends JFrame {
         });
     }
     private void openAddProduct() {
-        ProductForms addProductPanel = new ProductForms("ADD", service);
+        ProductForms addProductPanel = new ProductForms("ADD", service, serialization, validator);
 
         productPanel(addProductPanel);
     }
     private void openEditProduct() {
-        ProductForms addProductPanel = new ProductForms("EDIT", service);
+        ProductForms addProductPanel = new ProductForms("EDIT", service, serialization, validator);
 
         productPanel(addProductPanel);
     }
     private void openRemoveProduct() {
-        ProductForms addProductPanel = new ProductForms("DELETE", service);
+        ProductForms addProductPanel = new ProductForms("DELETE", service, serialization, validator);
 
         productPanel(addProductPanel);
     }
     private void openAddMeal() {
-        MealForms addMealPanel = new MealForms("ADD", service);
+        MealForms addMealPanel = new MealForms("ADD", service, serialization);
 
         mealPanel(addMealPanel);
     }
     private void openEditMeal() {
-        MealForms addMealPanel = new MealForms("EDIT", service);
+        MealForms addMealPanel = new MealForms("EDIT", service, serialization);
 
         mealPanel(addMealPanel);
     }
     private void openRemoveMeal() {
-        MealForms addMealPanel = new MealForms("DELETE", service);
+        MealForms addMealPanel = new MealForms("DELETE", service, serialization);
 
         mealPanel(addMealPanel);
     }
     private void openShowMeals(){
-        MealForms addMealPanel = new MealForms("SHOW", service);
+        MealForms addMealPanel = new MealForms("SHOW", service, serialization);
 
         mealPanel(addMealPanel);
     }
     private void openAddDiet() {
-        DietForms addDietPanel = new DietForms("ADD", service);
+        DietForms addDietPanel = new DietForms("ADD", service, serialization);
 
         dietPanel(addDietPanel);
     }
     private void openShowDiet() {
-        DietForms addDietPanel = new DietForms("SHOW", service);
+        DietForms addDietPanel = new DietForms("SHOW", service, serialization);
 
         dietPanel(addDietPanel);
     }
     private void openGenerateShoppingList(){
-        DietForms addDietPanel = new DietForms("SHOPPING LIST", service);
+        DietForms addDietPanel = new DietForms("SHOPPING LIST", service, serialization);
 
         dietPanel(addDietPanel);
     }

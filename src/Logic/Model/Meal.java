@@ -40,7 +40,7 @@ public class Meal implements Serializable {
     }
     public void removeIngredient(Product product){
         this.Ingredients.remove(product);
-        if(!validateIsInMeal(product)){
+        if(!validateIsInMeal(product, service)){
             product.setUsed(false);
         }
     }
@@ -87,7 +87,7 @@ public class Meal implements Serializable {
     public void setUsed(boolean isUsed){
         this.isUsed = isUsed;
     }
-    public boolean validateIsInMeal(Product product) {
+    public boolean validateIsInMeal(Product product, Service service) {
         for (Meal meal : service.getMealsList()) {
             if (meal.getIngredients().containsKey(product)) {
                 return true;

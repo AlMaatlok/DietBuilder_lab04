@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class ProductForms extends JPanel implements Serializable {
     private JTextField nameField,fatsField, carbsField, proteinField, quantityField;
-    private Service service = new Service();
+    private Service service;
     private JButton saveButton;
     private JComboBox<String> categoryCombo;
     private JComboBox<String> productCombo;
@@ -22,10 +22,10 @@ public class ProductForms extends JPanel implements Serializable {
     private Validator validator ;
     private Serialization serialization;
 
-    public ProductForms(String action, Service service) {
+    public ProductForms(String action, Service service, Serialization serialization, Validator validator) {
         this.service = service;
-        this.serialization =new Serialization(service);
-        this.validator = new Validator();
+        this.serialization = serialization;
+        this.validator = validator;
 
         serialization.deserializationOfProducts();
 
@@ -87,7 +87,7 @@ public class ProductForms extends JPanel implements Serializable {
 
                     Product newProduct = new Product(name, carbs, fats, protein, category, quantity, false);
 
-                    if(!validator.validateOriginalProduct(newProduct)){
+                    if(validator.validateOriginalProduct(newProduct, service)){
                         JOptionPane.showMessageDialog(null, "Taki produkt już istnieje");
                     }
                     else {

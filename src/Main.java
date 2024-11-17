@@ -1,3 +1,6 @@
+import Logic.Controller.Serialization;
+import Logic.Controller.Service;
+import Logic.Controller.Validator;
 import Logic.GUI.MainWindow;
 
 
@@ -14,10 +17,13 @@ public class Main {
         }
 
         try {
-            javax.swing.SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    new MainWindow().setVisible(true);
-                }
+            Service service = new Service();
+            Serialization serialization = new Serialization(service);
+            Validator validator = new Validator();
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                MainWindow mainWindow = new MainWindow(service, serialization, validator);
+                mainWindow.setVisible(true);
             });
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

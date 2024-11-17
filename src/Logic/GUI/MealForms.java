@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MealForms extends JPanel implements Serializable {
-    private Service service = new Service();
+    private Service service;
     private Serialization serialization;
     private JComboBox<String> productCombo;
     private JTextField nameField, quantityOfProductField, quantityField;
@@ -25,9 +25,9 @@ public class MealForms extends JPanel implements Serializable {
     private JComboBox<String> mealCombo;
     private Meal mealToDelete, mealToShow;
 
-    public MealForms(String action, Service service) {
+    public MealForms(String action, Service service, Serialization serialization) {
         this.service = service;
-        this.serialization = new Serialization(service);
+        this.serialization = serialization;
         this.validator = new Validator();
 
         serialization.deserializationOfProducts();

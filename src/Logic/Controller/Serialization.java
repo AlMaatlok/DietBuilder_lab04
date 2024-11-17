@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Serialization {
-    private Service service = new Service();
+    private Service service;
 
     public Serialization(Service service) {
         this.service = service;
