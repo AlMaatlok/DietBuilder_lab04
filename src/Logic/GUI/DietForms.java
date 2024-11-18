@@ -138,7 +138,7 @@ public class DietForms extends JPanel {
         });
     }
     public void generateShoppingList(){
-        setLayout(new GridLayout());
+        setLayout(new GridLayout(3,0));
         serialization.deserializationOfDiets();
 
         getDietCombo();

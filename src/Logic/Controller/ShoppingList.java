@@ -3,12 +3,17 @@ package Logic.Controller;
 import Logic.Model.Diet;
 import Logic.Model.Meal;
 import Logic.Model.Product;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,19 +53,25 @@ public class ShoppingList {
             PdfDocument pdfDocument = new PdfDocument(writer);
             Document document = new Document(pdfDocument);
 
-            document.add(new Paragraph("Lista Zakupów"));
+            String fontPath = "C:\\Windows\\Fonts\\arial.ttf";
+            PdfFont font = PdfFontFactory.createFont(fontPath, "Identity-H", true);
+
+            document.add(new Paragraph("Lista Zakupów").setFont(font));
             document.add(new Paragraph(" "));
 
             for (String category : shoppingList.keySet()) {
-                document.add(new Paragraph("Kategoria: " + category));
+                document.add(new Paragraph("Kategoria: " + category).setFont(font));
                 for (Map.Entry<String, Double> entry : shoppingList.get(category).entrySet()) {
-                    document.add(new Paragraph(" - " + entry.getKey() + ": " + entry.getValue() + "g"));
+                    document.add(new Paragraph(" - " + entry.getKey() + ": " + entry.getValue() + "g").setFont(font));
                 }
                 document.add(new Paragraph(" "));
             }
 
             document.close();
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();}
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

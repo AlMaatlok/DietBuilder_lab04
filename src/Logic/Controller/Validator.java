@@ -20,4 +20,12 @@ public class Validator {
         }
         return value;
     }
+    public boolean validateSum(Product product) {
+        double sum;
+        sum = product.getCarbs() + product.getProtein() + product.getFats();
+        if(sum > product.getQuantity()){
+            return false;
+        }
+        else return true;
+    }
 }

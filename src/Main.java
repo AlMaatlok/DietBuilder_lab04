@@ -3,6 +3,8 @@ import Logic.Controller.Service;
 import Logic.Controller.Validator;
 import Logic.GUI.MainWindow;
 
+import java.awt.*;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +22,7 @@ public class Main {
             Service service = new Service();
             Serialization serialization = new Serialization(service);
             Validator validator = new Validator();
+
 
             javax.swing.SwingUtilities.invokeLater(() -> {
                 MainWindow mainWindow = new MainWindow(service, serialization, validator);

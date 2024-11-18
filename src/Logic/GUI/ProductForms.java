@@ -90,6 +90,9 @@ public class ProductForms extends JPanel implements Serializable {
                     if(validator.validateOriginalProduct(newProduct, service)){
                         JOptionPane.showMessageDialog(null, "Taki produkt już istnieje");
                     }
+                    if(!validator.validateSum(newProduct)){
+                        JOptionPane.showMessageDialog(null, "Suma makroelementów większa od porcji produktu.");
+                    }
                     else {
                     service.addProduct(newProduct);
                     serialization.serializationOfProducts();

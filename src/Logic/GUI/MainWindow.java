@@ -96,6 +96,7 @@ public class MainWindow extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+
                 System.out.println("Liczba produktów w liście: " + service.getProductsList().size());
 
                 for (Product product : service.getProductsList()) {

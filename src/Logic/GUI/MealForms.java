@@ -126,7 +126,7 @@ public class MealForms extends JPanel implements Serializable {
         quantityOfProductField.setEditable(false);
         add(quantityOfProductField);
 
-        add(new JLabel("Ilość potrzebna do posiłku"));
+        add(new JLabel("Ilość pojedyńczej porcji potrzebna do posiłku"));
         add(quantityField);
 
         add(saveButton);
