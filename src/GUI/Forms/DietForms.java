@@ -84,7 +84,7 @@ public class DietForms extends JPanel {
                     serialization.serializationOfDiets();
 
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Błąd. Wprowadź poprawne dane");
+                    JOptionPane.showMessageDialog(null, "Błąd. Wprowadź poprawne dane.");
                 }
             }
         });
@@ -129,7 +129,7 @@ public class DietForms extends JPanel {
                         add(new JLabel("Brak składników do wyświetlenia."));
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Nie znaleziono planu");
+                    JOptionPane.showMessageDialog(null, "Nie znaleziono planu.");
                 }
 
                 revalidate();
@@ -160,7 +160,7 @@ public class DietForms extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try{
                     if(selectedDiet == null){
-                        JOptionPane.showMessageDialog(null, "Nie wybrano diety.");
+                        JOptionPane.showMessageDialog(null, "Nie wybrano planu.");
                     }
                     else{
                         service.saveShoppingListToFile(selectedDiet);
