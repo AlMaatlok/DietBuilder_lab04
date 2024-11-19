@@ -223,7 +223,7 @@ public class ProductForms extends JPanel implements Serializable {
                         JOptionPane.showMessageDialog(null, "Proszę wybrać produkt do usunięcia");
                     }
                     else if(productToDelete.getUsed()){
-                        JOptionPane.showMessageDialog(null, "Akcja niemożliwa. Produkt znajduje się w posiłku");
+                        JOptionPane.showMessageDialog(null, "Akcja niemożliwa. Produkt znajduje się w posiłku.");
                     }
                     else {
                         service.removeProduct(productToDelete);
