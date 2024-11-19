@@ -185,7 +185,7 @@ public class ProductForms extends JPanel implements Serializable {
                     JOptionPane.showMessageDialog(null,"Produkt został edytowany!");
                     }
                 }catch(NumberFormatException ex){
-                    JOptionPane.showMessageDialog(null,"Błąd. Wprowadź poprawne dane");
+                    JOptionPane.showMessageDialog(null,"Błąd. Wprowadź poprawne dane.");
                 }
             }
         });
