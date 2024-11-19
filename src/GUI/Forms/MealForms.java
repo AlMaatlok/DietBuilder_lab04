@@ -10,11 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MealForms extends JPanel implements Serializable {
+public class MealForms extends JPanel {
     private Service service;
     private Serialization serialization;
     private JComboBox<String> productCombo;

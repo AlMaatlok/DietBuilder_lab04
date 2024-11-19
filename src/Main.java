@@ -3,7 +3,6 @@ import Logic.Controller.Service;
 import Logic.Controller.Validator;
 import GUI.Window.MainWindow;
 
-
 public class Main {
     public static void main(String[] args) {
         if (args.length > 1) {
@@ -30,6 +29,5 @@ public class Main {
             System.out.println("Error: " + e.getMessage());
             System.out.println("Wrong arguments, use -h if you need help");
         }
-
     }
 }

@@ -9,9 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 
-public class ProductForms extends JPanel implements Serializable {
+public class ProductForms extends JPanel {
     private JTextField nameField,fatsField, carbsField, proteinField, quantityField;
     private Service service;
     private JButton saveButton;
