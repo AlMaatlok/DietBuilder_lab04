@@ -1,5 +1,6 @@
 package Logic.Controller;
 
+import Logic.Model.Meal;
 import Logic.Model.Product;
 
 

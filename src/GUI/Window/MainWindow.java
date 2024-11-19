@@ -1,5 +1,8 @@
-package Logic.GUI;
+package GUI.Window;
 
+import GUI.Forms.DietForms;
+import GUI.Forms.MealForms;
+import GUI.Forms.ProductForms;
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
 import Logic.Controller.Validator;

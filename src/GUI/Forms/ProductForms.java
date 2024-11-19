@@ -1,4 +1,4 @@
-package Logic.GUI;
+package GUI.Forms;
 
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;

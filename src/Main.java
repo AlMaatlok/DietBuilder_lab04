@@ -1,9 +1,7 @@
 import Logic.Controller.Serialization;
 import Logic.Controller.Service;
 import Logic.Controller.Validator;
-import Logic.GUI.MainWindow;
-
-import java.awt.*;
+import GUI.Window.MainWindow;
 
 
 public class Main {
